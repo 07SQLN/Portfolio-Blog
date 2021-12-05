@@ -15,6 +15,22 @@ const Post = require("./models/BlogPost");
 
 app.use(express.urlencoded({ extended: false }));
 //mongioose
+
+//connection
+
+// const { MongoClient } = require("mongodb");
+// const uri =
+//   "mongodb+srv://saklainkumarkiri:saklainmahemoodk007@cluster0.uqrsf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+// client.connect((err) => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
 mongoose
   .connect("mongodb://localhost:27017/project1")
   .then(() => console.log("connection sucessful"));
@@ -32,9 +48,13 @@ app.get("/", (req, res) => {
 
 //BLOG
 app.get("/blog", async (req, res) => {
-  const post = await Post.find();
+  try {
+    const post = await Post.find();
 
-  res.render("blog", { post: post });
+    res.render("blog", { post: post });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 //BLOG SHOW
@@ -56,6 +76,14 @@ app.get("/news", (req, res) => {
 app.use("/admin", adminRoute);
 app.use(blogRoute);
 app.use(loginRoute);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
+app.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "client/build", "index.html"));
+});
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 app.listen(port, () => {
   console.log("Connection Sucessful");
