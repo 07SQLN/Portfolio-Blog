@@ -48,13 +48,9 @@ app.get("/", (req, res) => {
 
 //BLOG
 app.get("/blog", async (req, res) => {
-  try {
-    const post = await Post.find();
+  const post = await Post.find();
 
-    res.render("blog", { post: post });
-  } catch (error) {
-    console.log(error);
-  }
+  res.render("blog", { post: post });
 });
 
 //BLOG SHOW
@@ -77,13 +73,6 @@ app.use("/admin", adminRoute);
 app.use(blogRoute);
 app.use(loginRoute);
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
-}
-
-app.get("*", (request, response) => {
-  response.sendFile(path.join(__dirname, "client/build", "index.html"));
-});
 //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 app.listen(port, () => {
   console.log("Connection Sucessful");
