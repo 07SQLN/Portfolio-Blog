@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const app = express();
@@ -19,21 +20,20 @@ app.use(express.urlencoded({ extended: false }));
 //connection
 
 // const { MongoClient } = require("mongodb");
-// const uri =
-//   "mongodb+srv://saklainkumarkiri:saklainmahemoodk007@cluster0.uqrsf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-// const client = new MongoClient(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-// client.connect((err) => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
+const uri = process.env.DB_BLOG;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+client.connect((err) => {
+  const collection = client.db("test").collection("devices");
+  // perform actions on the collection object
+  client.close();
+});
 
-mongoose
-  .connect("mongodb://localhost:27017/project1")
-  .then(() => console.log("connection sucessful"));
+// mongoose
+//   .connect("mongodb://localhost:27017/project1")
+//   .then(() => console.log("connection sucessful"));
 
 //HBS
 
