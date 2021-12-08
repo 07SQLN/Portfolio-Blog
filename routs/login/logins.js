@@ -13,7 +13,7 @@ route.post("/login", async (req, res) => {
   try {
     const Username = req.body.Username;
     const password = req.body.Password;
-    const User = await OneUser.find({ Username: Username });
+    const User = await OneUser.findOne({ Username: Username });
 
     if (User.Password === password) {
       res.render("index");
