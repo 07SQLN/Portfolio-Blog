@@ -13,9 +13,12 @@ route.post("/login", async (req, res) => {
   try {
     const Username = req.body.Username;
     const password = req.body.Password;
-    const User = await OneUser.findOne({ Username: Username });
+    const User = await OneUser.findOne(
+      { Username: Username },
+      { Password: password }
+    );
 
-    if (User.Password === password) {
+    if (User.Password === password && User.Username === Username) {
       res.render("index");
     } else {
       res.send("incorrect username or password");
